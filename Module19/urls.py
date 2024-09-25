@@ -19,10 +19,12 @@ from django.urls import path
 
 import task1
 from task1.views import *
+from blog.views import *
 urlpatterns = [
     path('', sign_up, name='sign_up'),
     path('admin/', admin.site.urls),
     path('platform/', main_page, name='main_page'),
     path('platform/games/', games_page, name='games_page'),
     path('platform/cart/', cart_page, name='cart_page'),
+    path('blog/', post_list, name='post_list')
 ]

@@ -1,0 +1,53 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post List</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+    <h1>Post List</h1>
+
+    <!-- Форма для выбора количества элементов на странице -->
+    <form method="get" class="pagination-form">
+        <label for="items_per_page">Items per page:</label>
+        <select name="items_per_page" id="items_per_page" onchange="this.form.submit()">
+            <option value="5" {% if items_per_page == "5" %}selected{% endif %}>5</option>
+            <option value="10" {% if items_per_page == "10" %}selected{% endif %}>10</option>
+            <option value="20" {% if items_per_page == "20" %}selected{% endif %}>20</option>
+        </select>
+        <!-- Скрытое поле для передачи текущей страницы -->
+        <input type="hidden" name="page" value="{{ page_obj.number }}">
+    </form>
+
+    <!-- Список постов -->
+    {% for post in page_obj %}
+        <div class="post">
+            <h2>{{ post.title }}</h2>
+            <p>{{ post.content }}</p>
+        </div>
+    {% endfor %}
+
+    <!-- Пагинация -->
+    <div class="pagination">
+        <span class="step-links">
+            {% if page_obj.has_previous %}
+                <a href="?page=1&items_per_page={{ items_per_page }}">&laquo; first</a>
+                <a href="?page={{ page_obj.previous_page_number }}&items_per_page={{ items_per_page }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&items_per_page={{ items_per_page }}">next</a>
+                <a href="?page={{ page_obj.paginator.num_pages }}&items_per_page={{ items_per_page }}">last &raquo;</a>
+            {% endif %}
+        </span>
+    </div>
+</body>
+</html>
